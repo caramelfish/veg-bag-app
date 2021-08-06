@@ -59,3 +59,7 @@ def create(response):
 
 def view(response):
     return render(response, "main/view.html", {})
+
+
+def test(response):
+    return render(response, "main/test.json", {})

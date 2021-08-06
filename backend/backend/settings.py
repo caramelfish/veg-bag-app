@@ -41,10 +41,13 @@ INSTALLED_APPS = [
     "crispy_forms",
     "main.apps.MainConfig",
     "register.apps.RegisterConfig",
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -134,3 +137,7 @@ CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 LOGIN_REDIRECT_URL = "/home"
 LOGOUT_REDIRECT_URL = "/home"
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
