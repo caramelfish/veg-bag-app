@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from "react";
-import logo from './logo.svg';
-import './App.css';
-import Names from './components/Names';
+import React, { useEffect, useState } from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import Names from "./components/Names";
 import axios from "axios";
 
 function App() {
@@ -10,19 +10,18 @@ function App() {
 
   useEffect(() => {
     const fetchNames = async () => {
-      console.log(process.env)
-      const response = await axios.get(`${process.env.REACT_APP_API_ROOT}/test/`);
+      console.log(process.env);
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_ROOT}/test/`
+      );
 
-      setPeople(response.data)
-    }
+      setPeople(response.data);
+    };
 
-    fetchNames()
+    fetchNames();
+  }, [setPeople]);
 
-  }, [setPeople])
-
-  console.log("People", people)
-
-
+  console.log("People", people);
 
   return (
     <div className="App">
