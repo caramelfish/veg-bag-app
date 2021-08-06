@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-alr($_-&rc735#n_&ywhsiecj8tw!m@p3v4t4$^8=gn0*up$n7"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["veg-bag-app.herokuapp.com", "127.0.0.1"]
 
@@ -38,10 +38,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "crispy_forms",
-    "main.apps.MainConfig",
-    "register.apps.RegisterConfig",
+    "rest_framework",
     "corsheaders",
+    "api.apps.ApiConfig",
 ]
 
 MIDDLEWARE = [
@@ -135,8 +134,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
-LOGIN_REDIRECT_URL = "/home"
-LOGOUT_REDIRECT_URL = "/home"
+# LOGIN_REDIRECT_URL = "/home"
+# LOGOUT_REDIRECT_URL = "/home"
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
