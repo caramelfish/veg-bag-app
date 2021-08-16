@@ -6,6 +6,7 @@ router = routers.DefaultRouter()
 router.register(r"todolists", views.ToDoViewSet)
 router.register(r"todoitems", views.ToDoItemViewSet)
 router.register(r"categories", views.CategoryViewSet)
+router.register(r"customers", views.CustomersViewSet)
 
 urlpatterns = [
     path("", include(router.urls)),

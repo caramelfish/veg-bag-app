@@ -9,6 +9,9 @@ django-crispy-forms = "*"
 gunicorn = "*"
 whitenoise = "*"
 django-cors-headers = "*"
+django-extensions = "*"
+pyparsing = "*"
+pydot = "*"
 
 [dev-packages]
 flake8 = "*"

@@ -1,8 +1,26 @@
 from rest_framework import viewsets
-from .serializers import ToDoItemSerializer, ToDoSerializer, CategorySerializer
-from .models import ToDoList, ToDoItem, Category
+from .serializers import (
+    ToDoItemSerializer,
+    ToDoSerializer,
+    CategorySerializer,
+    CustomersSerializer,
+)
+from .models import ToDoList, ToDoItem, Category, Customers
 
 # Create your views here.
+
+
+############ CUSTOMERS ############
+
+
+class CustomersViewSet(viewsets.ModelViewSet):
+    queryset = Customers.objects.all()
+    serializer_class = CustomersSerializer
+
+
+##############################
+##############################
+##############################
 
 
 class ToDoViewSet(viewsets.ModelViewSet):

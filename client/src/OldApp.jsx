@@ -1,19 +1,16 @@
-import React, { useEffect, useState } from "react";
-import logo from "./logo.svg";
-import "./App.css";
-import Names from "./components/Names";
-import axios from "axios";
+import React, { useEffect, useState } from 'react';
+import logo from './logo.svg';
+import './OldApp.css';
+import Names from './components/Names';
+import axios from 'axios';
 
 function App() {
-  const [name, setName] = useState("Name");
   const [people, setPeople] = useState([]);
 
   useEffect(() => {
     const fetchNames = async () => {
       console.log(process.env);
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_ROOT}/test/`
-      );
+      const response = await axios.get(`${process.env.REACT_APP_API_ROOT}/test/`);
 
       setPeople(response.data);
     };
@@ -21,7 +18,7 @@ function App() {
     fetchNames();
   }, [setPeople]);
 
-  console.log("People", people);
+  console.log('People', people);
 
   return (
     <div className="App">
@@ -31,12 +28,7 @@ function App() {
           Edit <code>src/App.js</code> and save to reload.
         </p>
         <Names people={people} />
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a className="App-link" href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
           Poo poo
         </a>
       </header>

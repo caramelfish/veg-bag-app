@@ -1,0 +1,20 @@
+.list {
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    padding-left: 0px;
+}
+
+.list_item {
+    display: flex;
+    width: 100%;
+    max-width: 400px;
+    border: solid 1px #333;
+    box-sizing: border-box;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    justify-content: space-between;
+    font-weight: bold;
+    font-size: larger;
+    padding: 3px 5px;
+}
