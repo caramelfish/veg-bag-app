@@ -2,8 +2,6 @@ import * as React from 'react';
 import './List.css';
 
 export default function List(props) {
-  console.log(props.lists);
-
   const data = props.lists.map((list) => {
     return (
       <li className="list_item">

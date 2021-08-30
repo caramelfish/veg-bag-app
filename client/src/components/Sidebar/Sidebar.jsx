@@ -1,37 +1,72 @@
 import React from 'react';
 import './Sidebar.css';
 import logo from '../../imgs/green-isle-growers.png';
-import { BrowserRouter as Router, Switch, Route, Link, useRouteMatch, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Sidebar = () => {
   return (
-    <nav className="navbar navbar-dark bg-dark custom_nav">
-      <div className="container-fluid container_custom" style={{ top: 0, position: 'fixed' }}>
-        <div className="navbar-text me-auto">
-          <a href="#" className="navbar-brand ">
-            <img src={logo} alt="Green Isle Growers Logo" width="175" />
-          </a>
-          <hr />
-          <ul className="navbar-nav">
-            <li className="nav-item">
-              <Link to="/" className="nav-link">
-                Home
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link to="/orders" className="nav-link">
-                Orders
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link to="/customers" className="nav-link">
-                Customers
-              </Link>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+    <div className="sidebar-container">
+      <Link to="/" className="sidebar-navigation navbar-brand">
+        <img src={logo} className="img-fluid text-center" alt="Green Isle Growers Logo" style={{ padding: '20px' }} />
+      </Link>
+      <hr />
+      <ul className="sidebar-navigation">
+        <li className="header">Home</li>
+        <li>
+          <Link to="/" className="nav-link">
+            Dashboard
+          </Link>
+        </li>
+        <li>
+          <Link to="/products" className="nav-link">
+            Products
+          </Link>
+        </li>
+        <li className="header">Customers</li>
+        <li>
+          <Link to="customers" className="nav-link">
+            Customers
+          </Link>
+        </li>
+        <li>
+          <Link to="customers/archive" className="nav-link">
+            Archived Customers
+          </Link>
+        </li>
+        <li>
+          <Link to="customers/subscriptions" className="nav-link">
+            Subscriptions
+          </Link>
+        </li>
+        <li>
+          <Link to="customers/holidays" className="nav-link">
+            Customer Holidays
+          </Link>
+        </li>
+        <li className="header">Orders</li>
+        <li>
+          <Link to="orders" className="nav-link">
+            Orders
+          </Link>
+        </li>
+        <li>
+          <Link to="orders/packing" className="nav-link">
+            Packing
+          </Link>
+        </li>
+        <li className="header">Finances</li>
+        <li>
+          <Link to="finances" className="nav-link">
+            Financial Overview
+          </Link>
+        </li>
+        <li>
+          <Link to="finances/transactions" className="nav-link">
+            Transactions
+          </Link>
+        </li>
+      </ul>
+    </div>
   );
 };
 

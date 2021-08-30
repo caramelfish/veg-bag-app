@@ -6,9 +6,14 @@ router = routers.DefaultRouter()
 router.register(r"todolists", views.ToDoViewSet)
 router.register(r"todoitems", views.ToDoItemViewSet)
 router.register(r"categories", views.CategoryViewSet)
+router.register(r"subscriptions", views.SubscriptionsViewSet)
+router.register(r"orders", views.OrdersViewSet)
 router.register(r"customers", views.CustomersViewSet)
+router.register(r"products", views.ProductsViewSet)
 
-urlpatterns = [
-    path("", include(router.urls)),
-    path("api-auth/", include("rest_framework.urls", namespace="rest_framwork")),
-]
+urlpatterns = router.urls
+
+# [
+#     path("", include(router.urls)),
+#     path("api-auth/", include("rest_framework.urls", namespace="rest_framwork")),
+# ]

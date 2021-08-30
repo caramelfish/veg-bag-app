@@ -9,7 +9,6 @@ function App() {
 
   useEffect(() => {
     const fetchNames = async () => {
-      console.log(process.env);
       const response = await axios.get(`${process.env.REACT_APP_API_ROOT}/test/`);
 
       setPeople(response.data);
@@ -17,8 +16,6 @@ function App() {
 
     fetchNames();
   }, [setPeople]);
-
-  console.log('People', people);
 
   return (
     <div className="App">

@@ -1,9 +1,14 @@
-.navbar_col {
+.nav_col {
+    max-width: 292px !important;
+    padding: 0px !important;
+}
+
+/* .navbar_col {
     height: 100%;
     width: 100%;
     max-width: 250px;
-    padding-right: 0%
-};
+    min-width: 210px
+}; */
 
 /* .header_custom {
     position: fixed;
@@ -17,7 +22,3 @@
     border: 5px;
     border-radius: 5px;
 } */
-
-body {
-    background: black
-}

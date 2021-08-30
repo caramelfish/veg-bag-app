@@ -1,52 +1,63 @@
 import React from 'react';
-import Sidebar from './components/Sidebar/Sidebar';
-// import ToDo from './components/ToDo/ToDo';
+import { Routes, Route, useNavigate } from 'react-router-dom';
+
 import './App.css';
+
+import Sidebar from './components/Sidebar/Sidebar';
 import Header from './components/Header/Header';
-import Customers from './views/Customers/Customers';
-// import ToDo from './components/ToDo';
-import { BrowserRouter as Router, Switch, Route, Link, useRouteMatch, useParams } from 'react-router-dom';
-import Dashboard from './views/Dashboard/Dashboard';
-import Orders from './views/Orders/Orders';
+import Dashboard from './views/Dashboard/DashboardView';
+import Orders from './views/Orders/OrdersLayout';
+import Customers from './views/Customers/CustomersLayout';
+import Finances from './views/Finances/FinancesLayout';
+import Products from './views/Dashboard/ProductsView';
+import Account from './views/Account/AccountView';
 
 function App() {
+  const navigate = useNavigate();
+
+  const onSignOut = async (event) => {
+    event.preventDefault();
+
+    const confirmSignOut = window.confirm('You will be signed out.');
+
+    try {
+      if (confirmSignOut == true) {
+        alert('You have been signed out.');
+        navigate('../', { replace: true });
+      } else {
+        return;
+      }
+    } catch (error) {
+      console.log(error);
+      alert('Something went wrong');
+    }
+  };
+
   return (
-    <Router>
-      <div className="row" style={{ height: '100vh' }}>
-        <div className="col navbar_col">
-          <Sidebar />
+    <div className="row" style={{ height: '100vh' }}>
+      <div className="col nav_col bg-dark">
+        <Sidebar />
+      </div>
+
+      <div className="col">
+        <div className="row">
+          <Header onSignOut={onSignOut} />
+          <hr />
         </div>
-        <div className="col">
-          <div className="row header_custom">
-            <Header />
-            <hr />
-          </div>
-          <div className="container-fluid">
-            <div className="container-fluid bg-light rounded-3 border border-white">
-              <div className="row">
-                <Switch>
-                  <Route path="/customers">
-                    <Customers />
-                  </Route>
-                  <Route path="/orders">
-                    <Orders />
-                  </Route>
-                  <Route path="/">
-                    <Dashboard />
-                  </Route>
-                </Switch>
-              </div>
-            </div>
-          </div>
+
+        <div className="container-fluid">
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/products" element={<Products />} />
+            <Route path="customers/*" element={<Customers />} />
+            <Route path="orders/*" element={<Orders />} />
+            <Route path="finances/*" element={<Finances />} />
+            <Route path="account/" element={<Account />} />
+          </Routes>
         </div>
       </div>
-    </Router>
+    </div>
   );
 }
-
-// row - top bar (header)
-// row then column - sidebar
-// more columns in that row - page content
-// row at bottom - footer
 
 export default App;

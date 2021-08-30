@@ -1,24 +1,21 @@
 import React from 'react';
-import './Header.css';
 
-const Header = () => {
+const Header = ({ onSignOut }) => {
   return (
-    <nav className="navbar navbar-expand-md navbar-light bg-light navbar_custom sticky-top">
-      <button type="button" className="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-        <span className="navbar-toggler-icon"></span>
-      </button>
-      <div className="collapse navbar-collapse" id="navbarCollapse">
-        <div />
-        <div className="navbar-nav me-auto mb-2 mb-lg-0 ml-auto">
-          <a className="nav-item nav-link" aria-current="page" href="#">
-            Account
-          </a>
-          <a className="nav-item nav-link" href="#">
-            Settings
-          </a>
-          <a className="nav-item nav-link" href="#">
-            Sign Out
-          </a>
+    <nav className="navbar navbar-expand-sm navbar-light bg-warning">
+      <div className="container">
+        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navitems'">
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="#navitems">
+          <div className="navbar-nav ms-auto mb-2 mb-lg-0 ml-auto">
+            <button className="btn" aria-current="page" href="/account">
+              Account
+            </button>
+            <button className="btn" href="#" onClick={onSignOut}>
+              Sign Out
+            </button>
+          </div>
         </div>
       </div>
     </nav>

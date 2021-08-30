@@ -8,7 +8,7 @@ from .models import (
     PackingListActive,
     PackingListHolidays,
     Customers,
-    Subscriptions,
+    Subscription,
     Holiday,
     Orders,
     Transaction,
@@ -57,8 +57,10 @@ class CustomersSerializer(serializers.ModelSerializer):
 
 
 class SubscriptionsSerializer(serializers.ModelSerializer):
+    items = ProductsSerializer(many=True)
+
     class Meta:
-        model = Subscriptions
+        model = Subscription
         fields = "__all__"
 
 
