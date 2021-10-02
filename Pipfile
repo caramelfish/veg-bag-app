@@ -5,18 +5,20 @@ name = "pypi"
 
 [packages]
 django = "*"
-django-crispy-forms = "*"
 gunicorn = "*"
 whitenoise = "*"
 django-cors-headers = "*"
 django-extensions = "*"
-pyparsing = "*"
-pydot = "*"
 pendulum = "*"
+django-heroku = "*"
+django-rest-auth = "*"
+django-allauth = "*"
 
 [dev-packages]
 flake8 = "*"
 black = "*"
+pyparsing = "*"
+pydot = "*"
 
 [requires]
 python_version = "3.9"
