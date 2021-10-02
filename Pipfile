@@ -14,12 +14,12 @@ django-heroku = "*"
 django-rest-auth = "*"
 django-allauth = "*"
 python-dotenv = "*"
+pyparsing = "*"
+pydot = "*"
 
 [dev-packages]
 flake8 = "*"
 black = "*"
-pyparsing = "*"
-pydot = "*"
 
 [requires]
 python_version = "3.9"
