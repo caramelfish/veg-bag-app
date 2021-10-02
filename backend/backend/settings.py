@@ -38,10 +38,23 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # 3rd party apps
     "rest_framework",
+    "rest_framework.authtoken",
     "corsheaders",
+    "django_extensions",
+    "pendulum",
+    "pydot",
+    "pyparsing",
+    # My apps
     "api.apps.ApiConfig",
-    "django_extensions"
+    # Authentication
+    "rest_auth",
+    "django.contrib.sites",
+    "allauth",
+    "allauth.account",
+    "rest_auth.registration",
+    'allauth.socialaccount'
 ]
 
 MIDDLEWARE = [
@@ -56,6 +69,8 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 ROOT_URLCONF = "backend.urls"
 
@@ -108,12 +123,19 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework.authentication.TokenAuthentication",
+    ),
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAdminUser",),
+}
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Europe/London"
 
 USE_I18N = True
 
@@ -135,9 +157,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
-# LOGIN_REDIRECT_URL = "/home"
-# LOGOUT_REDIRECT_URL = "/home"
-
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
+
+SITE_ID = 1

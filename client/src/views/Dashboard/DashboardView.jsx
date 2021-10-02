@@ -6,9 +6,10 @@ const DashboardView = () => {
       <h1 className="text-warning" style={{ paddingBottom: '20px', paddingTop: '5px' }}>
         Dashboard
       </h1>
-      <ul>
-        <li>This is a list item</li>
-      </ul>
+      <p>
+        If you cannot see any data on this website you do not have the appropriate permissions to access this site.
+      </p>
+      <p>Contact the site administrator if this is incorrect.</p>
     </div>
   );
 };

@@ -5,14 +5,16 @@ import Select from 'react-select';
 
 import CustomerCard from '../../components/Customers/CustomerCard';
 import SubCard from '../../components/Customers/SubCard';
-import Form from '../../components/Customers/CustomerForm';
-import SubForm from '../../components/Customers/SubForm';
-import { EventNote } from '@material-ui/icons';
+import Form from '../../components/Customers/EditCustomerForm';
+import SubForm from '../../components/Customers/EditSubForm';
 
 const DetailView = () => {
   // Getting the customer ID from the URL
   const { id } = useParams();
   const navigate = useNavigate();
+
+  // Get the authentication token for API requests
+  const AccessToken = sessionStorage.getItem('SecretToken');
 
   // Defining the useStates
   const [customer, setCustomer] = useState({});
@@ -23,17 +25,16 @@ const DetailView = () => {
   const [products, setProducts] = useState([]);
   const [productOptions, setProductOptions] = useState([]);
   const [selectedProducts, setSelectedProducts] = useState([]);
-
-  console.log('Sub: ', sub);
-  console.log('Original Sub: ', originalSub);
-  console.log('Products: ', products);
-  console.log('Product Options: ', productOptions);
-  console.log('Selected Products: ', selectedProducts);
+  const [cost, setCost] = useState(0);
 
   // Getting the customer data
   useEffect(() => {
     const fetchCustomer = async () => {
-      const response = await axios.get(`${process.env.REACT_APP_API_ROOT}/api/customers/${id}`);
+      const response = await axios.get(`${process.env.REACT_APP_API_ROOT}/api/customers/${id}`, {
+        headers: {
+          Authorization: AccessToken,
+        },
+      });
 
       setCustomer(response.data);
       setOriginalCustomer(response.data);
@@ -46,13 +47,20 @@ const DetailView = () => {
   useEffect(() => {
     const fetchSub = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_ROOT}/subscriptions`);
-
-        const response2 = await axios.get(`${process.env.REACT_APP_API_ROOT}/subscriptions/1`);
-
-        console.log('RESPONSE 2: ', response2.data);
-
+        const response = await axios.get(`${process.env.REACT_APP_API_ROOT}/subscriptions`, {
+          headers: {
+            Authorization: AccessToken,
+          },
+        });
         const thisSub = response.data.filter((sub) => sub.customer == id);
+        console.log('thisSub', thisSub);
+
+        // Calling the retrieve request to trigger the API function which automatically sets the sub as inactive if the end date is in the past
+        const response2 = await axios.get(`${process.env.REACT_APP_API_ROOT}/subscriptions/${thisSub[0].id}`, {
+          headers: {
+            Authorization: AccessToken,
+          },
+        });
 
         setSub(thisSub[0]);
         setOriginalSub(thisSub[0]);
@@ -67,12 +75,14 @@ const DetailView = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_ROOT}/products`);
-
-        const productOptions = response.data.map((product) => ({ value: product.id, label: product.name }));
-
+        const response = await axios.get(`${process.env.REACT_APP_API_ROOT}/products`, {
+          headers: {
+            Authorization: AccessToken,
+          },
+        });
+        const responseOptions = response.data.map((product) => ({ value: product.id, label: product.name }));
         setProducts(response.data);
-        setProductOptions(productOptions);
+        setProductOptions(responseOptions);
       } catch (error) {
         console.log(error);
       }
@@ -118,11 +128,19 @@ const DetailView = () => {
   const onCustomerArchive = async (event) => {
     event.preventDefault();
     try {
-      await axios.put(`${process.env.REACT_APP_API_ROOT}/api/customers/${id}/`, { ...customer, archived: true });
+      await axios.put(
+        `${process.env.REACT_APP_API_ROOT}/api/customers/${id}/`,
+        { ...customer, archived: true },
+        {
+          headers: {
+            Authorization: AccessToken,
+          },
+        }
+      );
 
       alert(`${customer.first_name} ${customer.last_name} has been moved to the archive`);
 
-      navigate('../');
+      navigate('../archive');
     } catch (error) {
       console.log(error);
       alert('Something went wrong. Action has been aborted.');
@@ -133,7 +151,11 @@ const DetailView = () => {
   const onCustomerSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.put(`${process.env.REACT_APP_API_ROOT}/api/customers/${id}/`, customer);
+      const response = await axios.put(`${process.env.REACT_APP_API_ROOT}/api/customers/${id}/`, customer, {
+        headers: {
+          Authorization: AccessToken,
+        },
+      });
       setOriginalCustomer(response.data);
     } catch (error) {
       console.log(error);
@@ -152,15 +174,65 @@ const DetailView = () => {
 
     try {
       if (confirmDelete == true) {
-        await axios.delete(`${process.env.REACT_APP_API_ROOT}/api/customers/${id}/`);
+        await axios.delete(`${process.env.REACT_APP_API_ROOT}/api/customers/${id}/`, {
+          headers: {
+            Authorization: AccessToken,
+          },
+        });
         alert(`${customer.first_name} has been deleted`);
-        navigate('../', { replace: true });
+        navigate('../archive', { replace: true });
       } else {
         return;
       }
     } catch (error) {
       console.log(error);
       alert('Something went wrong');
+    }
+  };
+
+  // Defining markActive
+  const markActive = async (event) => {
+    event.preventDefault();
+    // Confirmation
+    const confirmChange = window.confirm(
+      `You are about to make this subscription active again. This subscription will be able to generate orders again. NOTE: If the subscription end date is in the past, the subscription will automatically be marked as inactive again - update the subscription end date to resolve this.`
+    );
+    // If confirmed, try PUT request
+    if (confirmChange == true) {
+      try {
+        const response = axios.patch(`${process.env.REACT_APP_API_ROOT}/api/subscriptions/${sub.id}/`, {
+          active: true,
+        });
+        console.log('ACTIVE response', response.data);
+        console.log('ACTIVE change confirmed');
+        window.location.reload();
+      } catch (error) {
+        console.log(error);
+        alert('Something went wrong. Sub has not been marked as active.');
+      }
+    }
+  };
+
+  // Defining markInactive
+  const markInactive = async (event) => {
+    event.preventDefault();
+    // Confirmation
+    const confirmChange = window.confirm(
+      `You are about to make this subscription inactive. Orders will no longer be created for this subscription unless it is set back to active.`
+    );
+    // If confirmed, try PUT request
+    if (confirmChange == true) {
+      try {
+        const response = axios.patch(`${process.env.REACT_APP_API_ROOT}/api/subscriptions/${sub.id}/`, {
+          active: false,
+        });
+        console.log('INACTIVE response', response.data);
+        console.log('INACTIVE change confirmed');
+        window.location.reload();
+      } catch (error) {
+        console.log(error);
+        alert('Something went wrong. Sub has not been marked as inactive.');
+      }
     }
   };
 
@@ -172,7 +244,15 @@ const DetailView = () => {
 
     try {
       if (confirmRestore == true) {
-        await axios.put(`${process.env.REACT_APP_API_ROOT}/api/customers/${id}/`, { ...customer, archived: false });
+        await axios.put(
+          `${process.env.REACT_APP_API_ROOT}/api/customers/${id}/`,
+          { ...customer, archived: false },
+          {
+            headers: {
+              Authorization: AccessToken,
+            },
+          }
+        );
         alert(`${customer.first_name} has been restored`);
         navigate('../');
       } else {
@@ -203,25 +283,50 @@ const DetailView = () => {
 
   // Update items
   const handleSelectedOptions = async (event) => {
-    console.log('onChange event: SELECTED', event);
+    const theSelectedProducts = products.filter((product) => event.some((item) => item.value === product.id));
 
-    const theProducts = products.filter((product) => event.some((item) => item.label === product.name));
-    setSelectedProducts(theProducts);
+    const selectedPrices = theSelectedProducts.map((product) => parseFloat(product.price));
+    const sum = selectedPrices.reduce((result, number) => result + number, 0);
+    setCost(sum);
+
+    // Updating selected products to PUT
+    const theSelectedProductsFormatted = theSelectedProducts.map((product) => product.id);
+    setSelectedProducts(theSelectedProductsFormatted);
   };
 
   // Defining onSubmit
   const onSubSubmit = async (event) => {
     event.preventDefault();
 
-    const enrichedSub = {
-      ...sub,
-      items: selectedProducts,
+    console.log('selected products before submission: ', selectedProducts);
+
+    const formattedSub = () => {
+      if (selectedProducts === undefined || selectedProducts.length == 0) {
+        const { items_details, ...noItemsSub } = {
+          ...sub,
+        };
+        return noItemsSub;
+      } else {
+        const { items_details, ...selectedItemsSub } = {
+          ...sub,
+          items: selectedProducts,
+        };
+        return selectedItemsSub;
+      }
     };
 
-    console.log('Submitting sub: ', enrichedSub);
+    console.log('sub being submitted', formattedSub());
 
     try {
-      const response = await axios.put(`${process.env.REACT_APP_API_ROOT}/api/subscriptions/${sub.id}/`, enrichedSub);
+      const response = await axios.put(
+        `${process.env.REACT_APP_API_ROOT}/api/subscriptions/${sub.id}/`,
+        formattedSub(),
+        {
+          headers: {
+            Authorization: AccessToken,
+          },
+        }
+      );
       setOriginalSub(response.data);
     } catch (error) {
       console.log(error);
@@ -235,7 +340,9 @@ const DetailView = () => {
         <div className="col">
           <CustomerCard customer={originalCustomer} checkBalance={checkBalance} />
         </div>
-        <div className="col">{originalSub && <SubCard sub={originalSub} />}</div>
+        <div className="col">
+          {originalSub && <SubCard sub={originalSub} markActive={markActive} markInactive={markInactive} />}
+        </div>
       </div>
       <div className="row">
         <div className="col">
@@ -248,7 +355,7 @@ const DetailView = () => {
               setFirstName={setFirstName}
               setLastName={setLastName}
               setEmail={setEmail}
-              onSubmit={onCustomerSubmit}
+              onEdit={onCustomerSubmit}
               onArchive={onCustomerArchive}
               onDelete={onCustomerDelete}
               onRestore={onCustomerRestore}
@@ -263,6 +370,7 @@ const DetailView = () => {
             {sub && products && (
               <SubForm
                 sub={sub}
+                cost={cost}
                 setStartDate={setStartDate}
                 setEndDate={setEndDate}
                 products={productOptions}

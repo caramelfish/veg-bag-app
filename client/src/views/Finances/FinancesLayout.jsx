@@ -2,6 +2,7 @@ import React from 'react';
 import { Routes, Route } from 'react-router';
 
 import Transactions from './TransactionsView';
+import Placeholder from './Placeholder';
 
 const FinancesLayout = () => {
   return (
@@ -11,6 +12,7 @@ const FinancesLayout = () => {
       </h1>
       <div>
         <Routes>
+          <Route path="" element={<Placeholder />} />
           <Route path="transactions" element={<Transactions />} />
         </Routes>
       </div>

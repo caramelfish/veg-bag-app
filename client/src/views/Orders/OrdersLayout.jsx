@@ -1,7 +1,9 @@
-import React from 'react';
+import axios from 'axios';
+import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router';
 
-import Orders from './OrdersView';
+import Orders from './OrdersTableView';
+import DetailView from './OrdersDetailView';
 import Packing from './PackingView';
 
 const OrdersLayout = () => {
@@ -13,6 +15,7 @@ const OrdersLayout = () => {
       <div>
         <Routes>
           <Route path="" element={<Orders />} />
+          <Route path=":id" element={<DetailView />} />
           <Route path="packing" element={<Packing />} />
         </Routes>
       </div>

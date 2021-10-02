@@ -8,9 +8,16 @@ const Customers = () => {
   const [customers, setCustomers] = useState([]);
   const [nonArchived, setNonArchived] = useState([]);
 
+  // Get the authentication token for API requests
+  const AccessToken = sessionStorage.getItem('SecretToken');
+
   useEffect(() => {
     const fetchCustomers = async () => {
-      const response = await axios.get(`${process.env.REACT_APP_API_ROOT}/api/customers`);
+      const response = await axios.get(`${process.env.REACT_APP_API_ROOT}/api/customers`, {
+        headers: {
+          Authorization: AccessToken,
+        },
+      });
 
       setCustomers(response.data);
     };

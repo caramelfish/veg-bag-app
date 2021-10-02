@@ -12,6 +12,7 @@ django-cors-headers = "*"
 django-extensions = "*"
 pyparsing = "*"
 pydot = "*"
+pendulum = "*"
 
 [dev-packages]
 flake8 = "*"

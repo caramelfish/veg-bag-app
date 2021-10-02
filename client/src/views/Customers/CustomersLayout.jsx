@@ -4,7 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 import TableView from './CustomersTableView';
 import ArchiveView from './CustomerArchiveView';
 import DetailView from './CustomersDetailView';
-import CustomerAddView from './CustomerAddView';
+import CustomerAddView from './AddCustomerView';
 import HolidaysView from './CustomersHolidayView';
 import Subs from './CustomersSubsView';
 

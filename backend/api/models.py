@@ -1,7 +1,6 @@
 from django.db import models
+from django.db.models.constraints import UniqueConstraint
 from django.db.models.deletion import CASCADE
-from django.db.models.fields import DateField
-from django.db.models.fields.related import ManyToManyField
 from django.utils import timezone
 
 
@@ -13,9 +12,11 @@ from django.utils import timezone
 
 class Products(models.Model):
     name = models.CharField(max_length=200, blank=False, unique=True)
-    price = models.DecimalField(max_digits=8, decimal_places=2, blank=False)
-    size = models.CharField(max_length=200, blank=True)
-    contents = models.TextField(blank=True)
+    price = models.DecimalField(
+        max_digits=8, decimal_places=2, blank=False, default=0.00
+    )
+    size = models.CharField(max_length=200, blank=True, null=True)
+    contents = models.TextField(blank=True, null=True)
 
     class Meta:
         verbose_name = "Product"
@@ -42,14 +43,14 @@ class PackingGroups(models.Model):
         return self.name
 
 
-class PackingListActive(models.Model):
+class PackingLists(models.Model):
     group = models.ForeignKey(PackingGroups, on_delete=CASCADE, editable=False)
     customers = models.TextField(editable=False)
 
 
-class PackingListHolidays(models.Model):
-    group = models.ForeignKey(PackingGroups, on_delete=CASCADE, editable=False)
-    customers = models.TextField(editable=False)
+# class PackingListHolidays(models.Model):
+#     group = models.ForeignKey(PackingGroups, on_delete=CASCADE, editable=False)
+#     customers = models.TextField(editable=False)
 
 
 ############ CUSTOMERS ############
@@ -74,8 +75,10 @@ class Subscription(models.Model):
     customer = models.OneToOneField(
         Customers, on_delete=CASCADE, related_name="subscription"
     )
-    items = models.ManyToManyField(Products)
-    cost = models.DecimalField(max_digits=8, decimal_places=2)
+    items = models.ManyToManyField(Products, related_name="items")
+    cost = models.DecimalField(
+        max_digits=8, decimal_places=2, default=0.00, editable=False, blank=False
+    )
     start_date = models.DateField()
     end_date = models.DateField()
     active = models.BooleanField(default=True, blank=False)
@@ -84,47 +87,76 @@ class Subscription(models.Model):
         verbose_name = "Subscription"
         verbose_name_plural = "Subscriptions"
 
-
-class Holiday(models.Model):
-    customer = models.ForeignKey(Customers, on_delete=CASCADE)
-    holiday_start = models.DateField(blank=False)
-    holiday_end = models.DateField(blank=False)
-
-    class Meta:
-        verbose_name = "Holiday"
-        verbose_name_plural = "Holidays"
-
     def __str__(self):
-        return f"{self.customer} {self.holiday_start} {self.holiday_end}"
+        try:
+            return (
+                f"{self.customer.first_name} {self.customer.last_name}'s subscription"
+            )
+        except:
+            return "Blank"
+
+
+# class Holiday(models.Model):
+#     customer = models.ForeignKey(Customers, on_delete=CASCADE)
+#     holiday_start = models.DateField(blank=False)
+#     holiday_end = models.DateField(blank=False)
+
+#     class Meta:
+#         verbose_name = "Holiday"
+#         verbose_name_plural = "Holidays"
+
+#     def __str__(self):
+#         return f"{self.customer} {self.holiday_start} {self.holiday_end}"
 
 
 ############ ORDERS ############
 
 
 class Orders(models.Model):
-    subscription = models.OneToOneField(Subscription, on_delete=CASCADE)
-    extras = models.ManyToManyField(Products)
-    cost = models.DecimalField(max_digits=8, decimal_places=2)
-    date = models.DateField(blank=False, default=timezone.now, editable=False)
+    subscription = models.OneToOneField(
+        Subscription, on_delete=models.SET_NULL, related_name="order", null=True
+    )
+    extras = models.ManyToManyField(Products, blank=True)
+    cost = models.DecimalField(
+        max_digits=8, decimal_places=2, default=0.00, editable=True, blank=False
+    )
+    date = models.DateTimeField(
+        auto_now=False, editable=False, null=True, auto_now_add=False
+    )
+    week_start = models.DateTimeField(
+        editable=False, auto_now=False, null=True, auto_now_add=False
+    )
+    week_end = models.DateTimeField(
+        editable=False, auto_now=False, null=True, auto_now_add=False
+    )
+    modified_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name = "Order"
         verbose_name_plural = "Orders"
+        unique_together = ["subscription", "week_start", "week_end"]
 
     def __str__(self):
-        return f"{self.subscription}"
+        try:
+            return f"{self.subscription.customer.first_name} {self.subscription.customer.last_name}'s order - {self.date}"
+        except:
+            return "Blank"
+
+
+CREDIT = "credit"
+DEBIT = "debit"
+MANUAL = "manual"
+TRANSACTION_CHOICES = [(CREDIT, "Credit"), (DEBIT, "Debit"), (MANUAL, "Manual")]
 
 
 class Transaction(models.Model):
-    CREDIT = "credit"
-    DEBIT = "debit"
-    MANUAL = "manual"
-    TRANSACTION_CHOICES = [(CREDIT, "Credit"), (DEBIT, "Debit"), (MANUAL, "Manual")]
     date = models.DateField()
     type = models.CharField(max_length=6, choices=TRANSACTION_CHOICES, blank=False)
     amount = models.DecimalField(max_digits=8, decimal_places=2)
-    order = models.ForeignKey(Orders, on_delete=CASCADE, blank=True)
-    customer = models.ForeignKey(Customers, on_delete=CASCADE, blank=True)
+    order = models.ForeignKey(Orders, on_delete=models.SET_NULL, blank=True, null=True)
+    customer = models.ForeignKey(
+        Customers, on_delete=models.SET_NULL, blank=True, null=True
+    )
 
     class Meta:
         verbose_name = "Transaction"
@@ -165,47 +197,3 @@ class CSVDefineCustomers(models.Model):
 
     def __str__(self):
         return self.customer
-
-
-##############################
-##############################
-##############################
-
-
-class Category(models.Model):
-    name = models.CharField(max_length=100)
-
-    class Meta:
-        verbose_name = "Category"
-        verbose_name_plural = "Categories"
-
-    def __str__(self):
-        return self.name
-
-
-class ToDoList(models.Model):
-    title = models.CharField(max_length=250)
-    content = models.TextField(blank=True)
-    category = models.ForeignKey(Category, default="general", on_delete=CASCADE)
-
-    class Meta:
-        verbose_name = "To Do List"
-        verbose_name_plural = "To Do Lists"
-
-    def __str__(self):
-        return self.title
-
-
-class ToDoItem(models.Model):
-    to_do_list = models.ForeignKey(ToDoList, on_delete=CASCADE)
-    item = models.TextField()
-    created = models.DateField(default=timezone.now)
-    due_date = models.DateField(default=timezone.now)
-
-    class Meta:
-        ordering = ["-created"]
-        verbose_name = "Item"
-        verbose_name_plural = "Items"
-
-    def __str__(self):
-        return self.item
