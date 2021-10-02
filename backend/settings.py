@@ -31,7 +31,7 @@ if os.path.isfile(dotenv_file):
 SECRET_KEY = "django-insecure-alr($_-&rc735#n_&ywhsiecj8tw!m@p3v4t4$^8=gn0*up$n7"
 ADMINS = [("Cara", "carajayne11@gmail.com")]
 MANAGERS = [("Cara", "carajayne11@gmail.com")]
-ALLOWED_HOSTS = ['veg-bag.herokuapp.com']
+ALLOWED_HOSTS = ["veg-bag.herokuapp.com"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -86,7 +86,7 @@ ROOT_URLCONF = "backend.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, 'build')],
+        "DIRS": [os.path.join(BASE_DIR / "build")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -151,9 +151,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 STATIC_URL = "/static/"
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'build/static')
-]
+STATICFILES_DIRS = [os.path.join(BASE_DIR / "build/static")]
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
