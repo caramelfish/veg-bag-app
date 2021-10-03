@@ -193,7 +193,7 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 
 # Configure Django App for Heroku
-django_heroku.settings(locals())
+# django_heroku.settings(locals())
 
 # Or for Development
 options = DATABASES["default"].get("OPTIONS", {})
