@@ -51,7 +51,7 @@ const RegisterView = () => {
     event.preventDefault();
     try {
       console.log('ACCOUNT REGISTERING: ', account);
-      const response = await axios.post(`${process.env.REACT_APP_API_ROOT}/rest-auth/registration/`, account, {
+      const response = await axios.post(`${process.env.REACT_APP_AUTH_URL}/dj-rest-auth/registration/`, account, {
         headers: {
           Authorization: AccessToken,
         },

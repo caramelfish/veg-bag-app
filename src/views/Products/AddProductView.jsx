@@ -84,7 +84,7 @@ const NewProductView = () => {
 
     console.log('Product being submitted: ', product);
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_ROOT}/api/products/`, product, {
+      const response = await axios.post(`${process.env.REACT_APP_API_ROOT}/products/`, product, {
         headers: {
           Authorization: AccessToken,
         },

@@ -19,7 +19,7 @@ const DetailView = () => {
 
   useEffect(() => {
     const fetchProduct = async () => {
-      const response = await axios.get(`${process.env.REACT_APP_API_ROOT}/api/products/${id}`, {
+      const response = await axios.get(`${process.env.REACT_APP_API_ROOT}/products/${id}`, {
         headers: {
           Authorization: AccessToken,
         },
@@ -72,7 +72,7 @@ const DetailView = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.put(`${process.env.REACT_APP_API_ROOT}/api/products/${id}/`, product, {
+      const response = await axios.put(`${process.env.REACT_APP_API_ROOT}/products/${id}/`, product, {
         headers: {
           Authorization: AccessToken,
         },
@@ -95,7 +95,7 @@ const DetailView = () => {
 
     try {
       if (confirmDelete == true) {
-        await axios.delete(`${process.env.REACT_APP_API_ROOT}/api/products/${id}/`, {
+        await axios.delete(`${process.env.REACT_APP_API_ROOT}/products/${id}/`, {
           headers: {
             Authorization: AccessToken,
           },

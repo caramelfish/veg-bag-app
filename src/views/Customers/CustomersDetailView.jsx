@@ -30,7 +30,7 @@ const DetailView = () => {
   // Getting the customer data
   useEffect(() => {
     const fetchCustomer = async () => {
-      const response = await axios.get(`${process.env.REACT_APP_API_ROOT}/api/customers/${id}`, {
+      const response = await axios.get(`${process.env.REACT_APP_API_ROOT}/customers/${id}`, {
         headers: {
           Authorization: AccessToken,
         },
@@ -129,7 +129,7 @@ const DetailView = () => {
     event.preventDefault();
     try {
       await axios.put(
-        `${process.env.REACT_APP_API_ROOT}/api/customers/${id}/`,
+        `${process.env.REACT_APP_API_ROOT}/customers/${id}/`,
         { ...customer, archived: true },
         {
           headers: {
@@ -151,7 +151,7 @@ const DetailView = () => {
   const onCustomerSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.put(`${process.env.REACT_APP_API_ROOT}/api/customers/${id}/`, customer, {
+      const response = await axios.put(`${process.env.REACT_APP_API_ROOT}/customers/${id}/`, customer, {
         headers: {
           Authorization: AccessToken,
         },
@@ -174,7 +174,7 @@ const DetailView = () => {
 
     try {
       if (confirmDelete == true) {
-        await axios.delete(`${process.env.REACT_APP_API_ROOT}/api/customers/${id}/`, {
+        await axios.delete(`${process.env.REACT_APP_API_ROOT}/customers/${id}/`, {
           headers: {
             Authorization: AccessToken,
           },
@@ -245,7 +245,7 @@ const DetailView = () => {
     try {
       if (confirmRestore == true) {
         await axios.put(
-          `${process.env.REACT_APP_API_ROOT}/api/customers/${id}/`,
+          `${process.env.REACT_APP_API_ROOT}/customers/${id}/`,
           { ...customer, archived: false },
           {
             headers: {
@@ -319,7 +319,7 @@ const DetailView = () => {
 
     try {
       const response = await axios.put(
-        `${process.env.REACT_APP_API_ROOT}/api/subscriptions/${sub.id}/`,
+        `${process.env.REACT_APP_API_ROOT}/subscriptions/${sub.id}/`,
         formattedSub(),
         {
           headers: {

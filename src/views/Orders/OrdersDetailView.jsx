@@ -34,7 +34,7 @@ const DetailView = () => {
   // Getting the order data
   useEffect(() => {
     const fetchOrder = async () => {
-      const response = await axios.get(`${process.env.REACT_APP_API_ROOT}/api/orders/${id}`, {
+      const response = await axios.get(`${process.env.REACT_APP_API_ROOT}/orders/${id}`, {
         headers: {
           Authorization: AccessToken,
         },
@@ -93,7 +93,7 @@ const DetailView = () => {
     event.preventDefault();
     console.log('Order being submitted: ', order);
     try {
-      const response = await axios.put(`${process.env.REACT_APP_API_ROOT}/api/orders/${order.id}/`, order, {
+      const response = await axios.put(`${process.env.REACT_APP_API_ROOT}/orders/${order.id}/`, order, {
         headers: {
           Authorization: AccessToken,
         },
@@ -117,7 +117,7 @@ const DetailView = () => {
 
     try {
       if (confirmDelete == true) {
-        await axios.delete(`${process.env.REACT_APP_API_ROOT}/api/orders/${id}/`, {
+        await axios.delete(`${process.env.REACT_APP_API_ROOT}/orders/${id}/`, {
           headers: {
             Authorization: AccessToken,
           },

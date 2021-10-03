@@ -23,7 +23,7 @@ const Orders = () => {
     const confirmGeneration = window.confirm('This will (re)generate the orders for this week.');
     try {
       if (confirmGeneration == true) {
-        const response = await axios.post(`${process.env.REACT_APP_API_ROOT}/api/orders/generate_orders/`, null, {
+        const response = await axios.post(`${process.env.REACT_APP_API_ROOT}/orders/generate_orders/`, null, {
           headers: {
             Authorization: AccessToken,
           },
@@ -40,7 +40,7 @@ const Orders = () => {
   // Gets all orders
   useEffect(() => {
     const fetchOrders = async () => {
-      const response = await axios.get(`${process.env.REACT_APP_API_ROOT}/api/orders`, {
+      const response = await axios.get(`${process.env.REACT_APP_API_ROOT}/orders`, {
         headers: {
           Authorization: AccessToken,
         },

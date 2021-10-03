@@ -11,11 +11,12 @@ django-cors-headers = "*"
 django-extensions = "*"
 pendulum = "*"
 django-heroku = "*"
-django-rest-auth = "*"
 django-allauth = "*"
 python-dotenv = "*"
 pyparsing = "*"
 pydot = "*"
+dj-rest-auth = {extras = ["with_social"], version = "*"}
+django-rest-framework = "*"
 
 [dev-packages]
 flake8 = "*"

@@ -13,7 +13,7 @@ const ProductsView = () => {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const response = await axios.get(`${process.env.REACT_APP_API_ROOT}/api/products/`, {
+      const response = await axios.get(`${process.env.REACT_APP_API_ROOT}/products/`, {
         headers: {
           Authorization: AccessToken,
         },

@@ -11,7 +11,7 @@ const Subs = () => {
 
   useEffect(() => {
     const fetchSubs = async () => {
-      const response = await axios.get(`${process.env.REACT_APP_API_ROOT}/api/subscriptions`, {
+      const response = await axios.get(`${process.env.REACT_APP_API_ROOT}/subscriptions`, {
         headers: {
           Authorization: AccessToken,
         },

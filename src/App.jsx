@@ -44,7 +44,7 @@ function App() {
     try {
       if (confirmSignOut == true) {
         try {
-          const response = await axios.post(`${process.env.REACT_APP_API_ROOT}/rest-auth/logout/`, null, {
+          const response = await axios.post(`${process.env.REACT_APP_AUTH_URL}/dj-rest-auth/logout/`, null, {
             headers: {
               Authorization: AccessToken,
             },

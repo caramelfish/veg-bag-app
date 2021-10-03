@@ -13,7 +13,7 @@ const Customers = () => {
 
   useEffect(() => {
     const fetchCustomers = async () => {
-      const response = await axios.get(`${process.env.REACT_APP_API_ROOT}/api/customers`, {
+      const response = await axios.get(`${process.env.REACT_APP_API_ROOT}/customers`, {
         headers: {
           Authorization: AccessToken,
         },

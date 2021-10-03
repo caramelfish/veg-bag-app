@@ -12,12 +12,17 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+import dotenv
 import django_heroku
 import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 # BASE_DIR = Path(__file__).resolve().parent.parent
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+dotenv_file = os.path.join(BASE_DIR, ".env")
+if os.path.isfile(dotenv_file):
+    dotenv.load_dotenv(dotenv_file)
 
 
 # Quick-start development settings - unsuitable for production
@@ -30,7 +35,10 @@ MANAGERS = [("Cara", "carajayne11@gmail.com")]
 ALLOWED_HOSTS = ["veg-bag.herokuapp.com"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+if os.path.isfile(dotenv_file):
+    DEBUG = True
+else:
+    DEBUG = False
 
 
 # Application definition
@@ -53,11 +61,11 @@ INSTALLED_APPS = [
     # My apps
     "api.apps.ApiConfig",
     # Authentication
-    "rest_auth",
+    "dj_rest_auth",
     "django.contrib.sites",
     "allauth",
     "allauth.account",
-    "rest_auth.registration",
+    "dj_rest_auth.registration",
     "allauth.socialaccount",
 ]
 
@@ -100,9 +108,21 @@ WSGI_APPLICATION = "backend.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
+if os.path.isfile(dotenv_file):
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+            "USER": "",
+            "PASSWORD": "",
+            "HOST": "",  # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+            "PORT": "",
+        }
+    }
+else:
+    DATABASES = {}
+    DATABASES["default"] = dj_database_url.config(conn_max_age=600)
 
-DATABASES = {}
-DATABASES["default"] = dj_database_url.config(conn_max_age=600)
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators

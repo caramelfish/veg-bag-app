@@ -145,7 +145,7 @@ const NewCustomerView = () => {
 
     try {
       // Add Customer
-      const response = await axios.post(`${process.env.REACT_APP_API_ROOT}/api/customers/`, customer, {
+      const response = await axios.post(`${process.env.REACT_APP_API_ROOT}/customers/`, customer, {
         headers: {
           Authorization: AccessToken,
         },
@@ -157,7 +157,7 @@ const NewCustomerView = () => {
       };
 
       // Add Subscription
-      const response2 = await axios.post(`${process.env.REACT_APP_API_ROOT}/api/subscriptions/`, enrichedSub, {
+      const response2 = await axios.post(`${process.env.REACT_APP_API_ROOT}/subscriptions/`, enrichedSub, {
         headers: {
           Authorization: AccessToken,
         },
