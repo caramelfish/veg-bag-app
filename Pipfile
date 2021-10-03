@@ -17,6 +17,7 @@ pyparsing = "*"
 pydot = "*"
 dj-rest-auth = {extras = ["with_social"], version = "*"}
 djangorestframework = "*"
+pytz = "*"
 
 [dev-packages]
 flake8 = "*"
