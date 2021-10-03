@@ -16,7 +16,7 @@ python-dotenv = "*"
 pyparsing = "*"
 pydot = "*"
 dj-rest-auth = {extras = ["with_social"], version = "*"}
-django-rest-framework = "*"
+djangorestframework = "*"
 
 [dev-packages]
 flake8 = "*"
