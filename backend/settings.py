@@ -185,7 +185,7 @@ CORS_ALLOWED_ORIGINS = [
 
 SITE_ID = 1
 
-# Securing cookies to send only via HTTPS
+# Securing to send only via HTTPS
 SESSION_COOKIE_SECURE = True  # Set this to True to avoid transmitting the session cookie over HTTP accidentally.
 CSRF_COOKIE_SECURE = True  # Set this to True to avoid transmitting the session cookie over HTTP accidentally.
 # Expire session if browser closed so tokens etc are not stored
