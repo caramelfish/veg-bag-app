@@ -32,7 +32,7 @@ if os.path.isfile(dotenv_file):
 SECRET_KEY = [os.environ["SECRET_KEY"]]
 ADMINS = [("Cara", "carajayne11@gmail.com")]
 MANAGERS = [("Cara", "carajayne11@gmail.com")]
-ALLOWED_HOSTS = ["veg-bag.herokuapp.com"]
+ALLOWED_HOSTS = ["veg-bag.herokuapp.com", "127.0.0.1"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
 if os.path.isfile(dotenv_file):
