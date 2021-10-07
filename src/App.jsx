@@ -112,7 +112,7 @@ function App() {
     // If checkAuth is false, user is not logged in, so display the login page
     return (
       <div className="container">
-        <h1>You must be logged in to access this site.</h1>
+        <p className="text-center">You must be logged in to access this site.</p>
         <Routes>
           <Route path="/*" element={<Login />} />
           <Route path="register" element={<Register />} />
