@@ -41,11 +41,7 @@ const LoginView = () => {
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post(`${process.env.REACT_APP_AUTH_URL}/dj-rest-auth/login/`, account, {
-        headers: {
-          Authorization: AccessToken,
-        },
-      });
+      const response = await axios.post(`${process.env.REACT_APP_AUTH_URL}/dj-rest-auth/login/`, account);
       if (response.data.key) {
         alert('User logged in successfully.');
         const token = response.data.key;
